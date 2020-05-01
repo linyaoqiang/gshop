@@ -119,6 +119,7 @@
           } else if (!/^\w{4}$/.test(captcha)) {
             //验证码必须是4位
             this.showTip("验证码必须是4位")
+
           }
         }
       },
