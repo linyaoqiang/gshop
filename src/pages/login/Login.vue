@@ -9,15 +9,17 @@
         </div>
       </div>
       <div class="login_content">
-        <form>
+        <form @submit.prevent="login">
           <div :class="{on:isMessageLogin}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button :disabled="!rightPhone" class="get_verification" @click.prevent="getCode" :class="{right_phone: rightPhone}" v-if="!computeTime">获取验证码</button>
-              <button disabled="disabled" class="get_verification right_phone"  v-else>发送({{computeTime}})s</button>
+              <button :disabled="!rightPhone" class="get_verification" @click.prevent="getCode"
+                      :class="{right_phone: rightPhone}" v-if="!computeTime">获取验证码
+              </button>
+              <button disabled="disabled" class="get_verification right_phone" v-else>发送({{computeTime}})s</button>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码">
+              <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -27,7 +29,7 @@
           <div :class="{on:!isMessageLogin}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
               </section>
               <section class="login_verification">
                 <input type="text" maxlength="8" placeholder="密码" v-model="pwd" v-if="showPassword">
@@ -38,7 +40,7 @@
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
                 <img class="get_verification" src="./images/captcha.svg" alt="captcha">
               </section>
             </section>
@@ -51,21 +53,33 @@
         <i class="iconfont icon-jiantou2"></i>
       </a>
     </div>
+    <AlterTip :alertText="alertText" @closeTip="closeTip" v-show="isShowAlterTip"/>
   </section>
+
 </template>
 
 <script>
+  import AlterTip from '../../components/AlterTip/AlterTip'
+
   export default {
     name: 'Login',
     data () {
       return {
         isMessageLogin: true,
-        phone: '',
+        phone: '', //手机号
         phoneReg: /^1[3,5,6,7,8,9]\d{9}$/,
         computeTime: 0,
-        pwd: '',
-        showPassword: false
+        pwd: '', //密码
+        showPassword: false,
+        captcha: '', //图像验证码
+        name: '',    //用户名
+        code: '',     //短信验证码
+        alertText: '',    //警告框内容
+        isShowAlterTip: false //是否提示警告框
       }
+    },
+    components: {
+      AlterTip
     },
     computed: {
       rightPhone () {
@@ -73,21 +87,50 @@
       }
     },
     methods: {
-      getCode() {
+      getCode () {
 
-        if(this.computeTime==0){
+        if (this.computeTime == 0) {
           //倒计时效果
-          this.computeTime=30
-          const intervalId = setInterval(()=>{
+          this.computeTime = 30
+          const intervalId = setInterval(() => {
             this.computeTime--
-            if(this.computeTime<=0){
+            if (this.computeTime <= 0) {
               clearInterval(intervalId)
             }
-          },1000)
+          }, 1000)
         }
         //发送ajax请求获取后台验证码
+      },
+      login () {
+        if (this.isMessageLogin) {  //短信登陆
+          const {phone, rightPhone, code} = this
+          if (!rightPhone) {
+            //手机号不正确
+            this.showTip("手机号不正确")
+          } else if (!/^\d{6}$/.test(code)) {
+            //手机验证码必须是6位数字
+            this.showTip("手机验证码必须是6位数字")
+          }
+        } else {
+          const {name, pwd, captcha} = this
+          if (!name || !pwd) {
+            //用户名或者密码为空
+            this.showTip("用户名或者密码为空")
+          } else if (!/^\w{4}$/.test(captcha)) {
+            //验证码必须是4位
+            this.showTip("验证码必须是4位")
+          }
+        }
+      },
+      showTip (alertText) {
+        this.isShowAlterTip = true
+        this.alertText = alertText
+      },
+      closeTip () {
+        this.isShowAlterTip = false
       }
-    }
+    },
+
   }
 </script>
 
@@ -164,8 +207,10 @@
                 color #ccc
                 font-size 14px
                 background transparent
+
                 &.right_phone
-                    color #000
+                  color #000
+
             .login_verification
               position relative
               margin-top 16px
@@ -210,8 +255,9 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0, 0, 0, .1)
                   transition transform .3s
+
                 > .right
-                  transform  translateX(30px)
+                  transform translateX(30px)
 
             .login_hint
               margin-top 12px
