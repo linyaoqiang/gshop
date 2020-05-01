@@ -13,7 +13,8 @@
           <div :class="{on:isMessageLogin}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button disabled="disabled" class="get_verification" :class="{right_phone: rightPhone}">获取验证码</button>
+              <button :disabled="!rightPhone" class="get_verification" @click.prevent="getCode" :class="{right_phone: rightPhone}" v-if="!computeTime">获取验证码</button>
+              <button disabled="disabled" class="get_verification right_phone"  v-else>发送({{computeTime}})s</button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -59,12 +60,30 @@
       return {
         isMessageLogin: true,
         phone: '',
-        phoneReg: /^1[3,5,6,7,8,9]\d{9}$/
+        phoneReg: /^1[3,5,6,7,8,9]\d{9}$/,
+        computeTime: 0,
+        pwd: ''
       }
     },
     computed: {
       rightPhone () {
         return this.phoneReg.test(this.phone)
+      }
+    },
+    methods: {
+      getCode() {
+
+        if(this.computeTime==0){
+          //倒计时效果
+          this.computeTime=30
+          const intervalId = setInterval(()=>{
+            this.computeTime--
+            if(this.computeTime<=0){
+              clearInterval(intervalId)
+            }
+          },1000)
+        }
+        //发送ajax请求获取后台验证码
       }
     }
   }
