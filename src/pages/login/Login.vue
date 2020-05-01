@@ -30,10 +30,11 @@
                 <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input type="text" maxlength="8" placeholder="密码" v-model="pwd" v-if="showPassword">
+                <input type="password" maxlength="8" placeholder="密码" v-model="pwd" v-else>
+                <div class="switch_button" :class="showPassword?'on':'off'" @click="showPassword=!showPassword">
+                  <div class="switch_circle" :class="{right:showPassword}"></div>
+                  <span class="switch_text">{{showPassword?'abc':'...'}}</span>
                 </div>
               </section>
               <section class="login_message">
@@ -62,7 +63,8 @@
         phone: '',
         phoneReg: /^1[3,5,6,7,8,9]\d{9}$/,
         computeTime: 0,
-        pwd: ''
+        pwd: '',
+        showPassword: false
       }
     },
     computed: {
@@ -208,6 +210,8 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0, 0, 0, .1)
                   transition transform .3s
+                > .right
+                  transform  translateX(30px)
 
             .login_hint
               margin-top 12px
