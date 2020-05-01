@@ -12,8 +12,8 @@
         <form>
           <div :class="{on:isMessageLogin}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号">
-              <button disabled="disabled" class="get_verification">获取验证码</button>
+              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+              <button disabled="disabled" class="get_verification" :class="{right_phone: rightPhone}">获取验证码</button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -57,7 +57,14 @@
     name: 'Login',
     data () {
       return {
-        isMessageLogin: true
+        isMessageLogin: true,
+        phone: '',
+        phoneReg: /^1[3,5,6,7,8,9]\d{9}$/
+      }
+    },
+    computed: {
+      rightPhone () {
+        return this.phoneReg.test(this.phone)
       }
     }
   }
@@ -136,7 +143,8 @@
                 color #ccc
                 font-size 14px
                 background transparent
-
+                &.right_phone
+                    color #000
             .login_verification
               position relative
               margin-top 16px
