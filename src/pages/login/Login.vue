@@ -60,6 +60,7 @@
 
 <script>
   import AlterTip from '../../components/AlterTip/AlterTip'
+  import {requestSendCode,requestPwdLogin,requestLogout} from '../../api'
 
   export default {
     name: 'Login',
@@ -87,12 +88,12 @@
       }
     },
     methods: {
-      getCode () {
-
+      async getCode () {
+        let intervalId =null
         if (this.computeTime == 0) {
           //倒计时效果
           this.computeTime = 30
-          const intervalId = setInterval(() => {
+          intervalId= setInterval(() => {
             this.computeTime--
             if (this.computeTime <= 0) {
               clearInterval(intervalId)
@@ -100,6 +101,15 @@
           }, 1000)
         }
         //发送ajax请求获取后台验证码
+        const result= await requestSendCode(this.phone)
+        if(result.code===1){
+          this.showTip(result.msg)
+          if(this.computeTime>0){
+            this.computeTime=0
+            clearInterval(intervalId)
+          }
+        }
+
       },
       login () {
         if (this.isMessageLogin) {  //短信登陆
