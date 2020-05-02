@@ -41,7 +41,7 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="getCaptcha">
               </section>
             </section>
           </div>
@@ -129,6 +129,9 @@
       },
       closeTip () {
         this.isShowAlterTip = false
+      },
+      getCaptcha (event) {
+        event.target.src='http://localhost:4000/captcha?time='+Date.now();
       }
     },
 
