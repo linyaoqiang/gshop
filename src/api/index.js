@@ -15,7 +15,7 @@ export const requestSearchShops = (geohash,keyword) =>ajax(BASE_URL+'/search_sho
 // 5、获取一次性验证码
 
 // 6、用户名密码登陆
-export  const requestPwdLogin = (name,pwd,captcha,BASE_URL+"/login_pwd",{name,pwd,captcha},"POST")
+export  const requestPwdLogin = (name,pwd,captcha)=>ajax(BASE_URL+"/login_pwd",{name,pwd,captcha},"POST")
 // 7、发送短信验证码
 export const requestSendCode = phone => ajax(BASE_URL+'/sendCode',{phone})
 // 8、手机号验证码登陆
