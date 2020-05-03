@@ -11,7 +11,7 @@ import {
 import {
   requestPosition,
   requestCategorys,
-  requestShops
+  requestShops, requestUserInfo
 } from '../api/index'
 
 export default {
@@ -46,6 +46,14 @@ export default {
   },
   setUserInfo({commit,state},userInfo){
     commit(RECEIVE_USER_INFO,{userInfo})
+  },
+
+  async getUserInfo({commit,state}){
+    const result = await requestUserInfo();
+    if(result.code===0){
+      const userInfo = result.data
+      commit(RECEIVE_USER_INFO,{userInfo})
+    }
   }
 }
 

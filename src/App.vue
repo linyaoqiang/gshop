@@ -14,12 +14,13 @@
       FooterGuide
     },
     methods: {
-      ...mapActions(['getAddress','getCategorys','getShops'])
+      ...mapActions(['getAddress','getCategorys','getShops','getUserInfo'])
     },
     mounted () {
       this.getAddress();
       this.getCategorys();
       this.getShops();
+      this.getUserInfo();
     }
   }
 </script>
