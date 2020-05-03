@@ -8,7 +8,7 @@
       <router-link class="header_login" slot="right" v-if="!userInfo._id" to="/login">
             <span class="header_login_text">登录|注册</span>
       </router-link>
-      <router-link class="header_login" slot="right" to="/userInfo">
+      <router-link class="header_login" slot="right" to="/userInfo" v-else>
            <i class="iconfont icon-person"></i>
       </router-link>
     </HeaderTop>
