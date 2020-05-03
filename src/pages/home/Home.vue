@@ -2,12 +2,15 @@
   <section class="msite">
     <!--首页头部-->
     <HeaderTop :title="address.name">
-      <span class="header_search" slot="left">
+      <router-link class="header_search" slot="left" to="/search">
         <i class="iconfont icon-sousuo"></i>
-      </span>
-      <span class="header_login" slot="right">
+      </router-link>
+      <router-link class="header_login" slot="right" v-if="!userInfo._id" to="/login">
             <span class="header_login_text">登录|注册</span>
-      </span>
+      </router-link>
+      <router-link class="header_login" slot="right" to="/userInfo">
+           <i class="iconfont icon-person"></i>
+      </router-link>
     </HeaderTop>
     <!--首页导航-->
     <nav class="msite_nav">
@@ -61,7 +64,7 @@
 
     },
     computed: {
-      ...mapState(['address', 'categorys']),
+      ...mapState(['address', 'categorys','userInfo']),
       //通过一维数组创建二维数组，并且小数组个数为8个
       categoriesArray () {
         const {categorys} = this
