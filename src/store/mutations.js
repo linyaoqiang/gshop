@@ -46,6 +46,9 @@ export default {
     if(!food.count){//如果没有值或者值为0时
       //给对象添加没有的属性Vue是检测不到的，但是Vue提供了，set的设置方法  ，参数  对象 ，属性，初始化值
       Vue.set(food,'count',1)
+
+      //添加到购物车中
+      state.cartFoods.push(food)
     }else{
       food.count++
     }
@@ -54,6 +57,11 @@ export default {
     if(food.count){//不能小于等于0
       food.count--
     }
+    //如果count为0则在购物车中移除
+    if(food.count===0){
+      state.cartFoods.splice(state.cartFoods.indexOf(food),1)
+    }
+
   }
 }
 

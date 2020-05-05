@@ -1,51 +1,57 @@
 <template>
-  <div class="goods">
-    <div class="menu-wrapper">
-      <ul>
-        <!--current-->
-        <li class="menu-item" v-for="(good, index) in goods" :key="index"
-            :class="{current: index===currentIndex}" @click.prevent="clickMenuItem(index)">
+  <div>
+    <div class="goods">
+      <div class="menu-wrapper">
+        <ul>
+          <!--current-->
+          <li class="menu-item" v-for="(good, index) in goods" :key="index"
+              :class="{current: index===currentIndex}" @click.prevent="clickMenuItem(index)">
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
             </span>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="foods-wrapper">
+        <ul ref="foodsUl">
+          <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
+            <h1 class="title">{{good.name}}</h1>
+            <ul>
+              <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods"
+                  :key="index" @click="showFood(food)">
+                <div class="icon">
+                  <img width="57" height="57" :src="food.icon">
+                </div>
+                <div class="content">
+                  <h2 class="name">{{food.name}}</h2>
+                  <p class="desc">{{food.description}}</p>
+                  <div class="extra">
+                    <span class="count">月售{{food.sellCount}}份</span>
+                    <span>好评率{{food.rating}}%</span>
+                  </div>
+                  <div class="price">
+                    <span class="now">￥{{food.price}}</span>
+                    <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
+                  </div>
+                  <div class="cartcontrol-wrapper">
+                    <cart-control :food="food"/>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <shop-cart/>
     </div>
-    <div class="foods-wrapper">
-      <ul ref="foodsUl">
-        <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
-          <h1 class="title">{{good.name}}</h1>
-          <ul>
-            <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods"
-                :key="index">
-              <div class="icon">
-                <img width="57" height="57" :src="food.icon">
-              </div>
-              <div class="content">
-                <h2 class="name">{{food.name}}</h2>
-                <p class="desc">{{food.description}}</p>
-                <div class="extra">
-                  <span class="count">月售{{food.sellCount}}份</span>
-                  <span>好评率{{food.rating}}%</span>
-                </div>
-                <div class="price">
-                  <span class="now">￥{{food.price}}</span>
-                  <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
-                </div>
-                <div class="cartcontrol-wrapper">
-                  <cart-control :food="food"/>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <food :food="food" ref="food"/>
   </div>
 </template>
 
 <script>
+  import ShopCart from '../../../components/ShopCart/ShopCart'
+  import Food from '../../../components/Food/Food'
   import CartControl from '../../../components/CartControl/CartControl'
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
@@ -55,11 +61,14 @@
     data () {
       return {
         scrollY: 0, //当前右侧列表的top的值
-        tops: []  //每一个右侧列表li的top值
+        tops: [],  //每一个右侧列表li的top值
+        food: {}
       }
     },
     components: {
-      CartControl
+      CartControl,
+      Food,
+      ShopCart
     },
     computed: {
       ...mapState(['goods']),
@@ -110,9 +119,17 @@
         //立即更新右侧状态
         this.scrollY = scrollY
         //右侧滚动到指定位置
-        this.foodsScroll.scrollTo(0,-scrollY,300)
+        this.foodsScroll.scrollTo(0, -scrollY, 300)
 
+      },
+      showFood (food) {
+        //更新food的状态
+        this.food = food
+
+        //调用food的方法
+        this.$refs.food.toggleShow()
       }
+
     }
   }
 </script>

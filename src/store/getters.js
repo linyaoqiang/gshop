@@ -3,6 +3,11 @@
  */
 
 export default {
-
+  totalCount (state) {
+    return state.cartFoods.reduce((prepareTotal, food) => prepareTotal+=food.count,0)
+  },
+  totalPrice (state) {
+    return state.cartFoods.reduce((prepareTotal, food) => prepareTotal+=food.count*food.price,0)
+  }
 }
 
