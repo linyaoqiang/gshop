@@ -12,7 +12,8 @@ import {
   RECEIVE_INFO,
   INCREMENT_FOOD_COUNT,
   DECREMENT_FOOD_COUNT,
-  CLEAR_CART
+  CLEAR_CART,
+  RECEIVE_SEARCH_SHOPS
 } from './mutation-types'
 import Vue from 'vue'
 
@@ -71,6 +72,9 @@ export default {
     })
     //移除购物车
     state.cartFoods=[]
+  },
+  [RECEIVE_SEARCH_SHOPS] (state,{searchShops}) {
+    state.searchShops=searchShops
   }
 }
 

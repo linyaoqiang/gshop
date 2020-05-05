@@ -12,6 +12,7 @@ export default {
   goods:[],    //点餐信息
   ratings:[],   //评论信息
   info:{},    //商家信息
-  cartFoods: [] //购物车食品列表
+  cartFoods: [], //购物车食品列表
+  searchShops: [] //搜索的商品列表
 }
 
