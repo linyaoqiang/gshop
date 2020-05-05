@@ -44,6 +44,7 @@
 
 <script>
   import BScroll from 'better-scroll'
+  import {MessageBox} from 'mint-ui'
   import CartControl from '../CartControl/CartControl'
   import {mapState, mapGetters} from 'vuex'
 
@@ -100,7 +101,9 @@
         }
       },
       clearCart () {
-
+        MessageBox.confirm('你确定要清空购物车吗?','清空购物车').then(action=>{
+          this.$store.dispatch('clearCart')
+        })
       }
     }
   }

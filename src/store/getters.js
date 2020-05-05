@@ -8,6 +8,10 @@ export default {
   },
   totalPrice (state) {
     return state.cartFoods.reduce((prepareTotal, food) => prepareTotal+=food.count*food.price,0)
+  },
+
+  positiveSize (state) {
+    return state.ratings.reduce((prepareSize,rating) => prepareSize+=(rating.rateType===0?1:0),0)
   }
 }
 
