@@ -9,9 +9,11 @@ import {
   RESET_USER_INFO,
   RECEIVE_GOODS,
   RECEIVE_RATINGS,
-  RECEIVE_INFO
+  RECEIVE_INFO,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
 } from './mutation-types'
-
+import Vue from  'vue'
 export default {
   [RECEIVE_ADDRESS] (state, {address}) {
     state.address = address
@@ -30,14 +32,28 @@ export default {
   [RESET_USER_INFO] (state) {
     state.userInfo = {}
   },
-  [RECEIVE_INFO](state, {info}) {
+  [RECEIVE_INFO] (state, {info}) {
     state.info = info
   },
-  [RECEIVE_RATINGS](state, {ratings}) {
+  [RECEIVE_RATINGS] (state, {ratings}) {
     state.ratings = ratings
   },
-  [RECEIVE_GOODS](state, {goods}) {
+  [RECEIVE_GOODS] (state, {goods}) {
     state.goods = goods
+  },
+
+  [INCREMENT_FOOD_COUNT] (state, {food}) {
+    if(!food.count){//如果没有值或者值为0时
+      //给对象添加没有的属性Vue是检测不到的，但是Vue提供了，set的设置方法  ，参数  对象 ，属性，初始化值
+      Vue.set(food,'count',1)
+    }else{
+      food.count++
+    }
+  },
+  [DECREMENT_FOOD_COUNT] (state,{food}){
+    if(food.count){//不能小于等于0
+      food.count--
+    }
   }
 }
 
