@@ -43,6 +43,7 @@
 </template>
 
 <script>
+  import BScroll from 'better-scroll'
   import CartControl from '../CartControl/CartControl'
   import {mapState, mapGetters} from 'vuex'
 
@@ -73,17 +74,29 @@
       },
       listShow () {
         if (this.totalCount === 0) {
-          this.isShow=false
+          this.isShow = false
           return false
         }
+
+        if (this.isShow) {
+          //创建BScroll对象，并且BScroll对象是单例的
+          if (!this.scroll) {
+            this.scroll = new BScroll('.list-content', {
+              click: true //click:true BScroll将禁用系统的事件，并有BScroll对象进行派发事件
+            })
+          } else {
+            this.scroll.refresh() //让BScroll对象重新计算内容的高度，决定是否生成滚动条
+          }
+        }
+
         return this.isShow
       }
     },
     methods: {
 
       toggleShow () {
-        if(this.totalCount>0){
-          this.isShow=!this.isShow
+        if (this.totalCount > 0) {
+          this.isShow = !this.isShow
         }
       },
       clearCart () {
