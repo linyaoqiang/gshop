@@ -46,6 +46,7 @@
     "html-webpack-plugin": "^2.30.1",
     "mint-ui": "^2.2.13",
     "mockjs": "^1.1.0",
+    "moment": "^2.25.3",
     "momentjs": "^2.0.0",
     "node-notifier": "^5.1.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",

@@ -8,7 +8,7 @@ import {Button} from  'mint-ui'
 import './mock/mockServer'
 import VueLazyload from 'vue-lazyload'
 import loading from './common/imgs/loading.gif'
-
+import './filters/index'
 /*注册为全局组件*/
 Vue.component(Button.name,Button)
 
