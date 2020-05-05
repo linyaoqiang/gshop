@@ -70,7 +70,7 @@
     },
     methods: {
       toggleShow () {
-        return false;
+        this.listShow = !this.listShow
       },
       clearCart () {
 
